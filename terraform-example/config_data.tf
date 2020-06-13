@@ -26,11 +26,3 @@ data "aws_ami" "ms_win_2016" {
    values = ["Windows_Server-2016-English-Full-Base-*"]
  }
 }
-
-# data "template_file" "my_ip_addr" {
-#   template = file("./script/black_ip_list.txt")
-  
-#   vars = {
-#     my_ip_addr = local.my_ip_addrs
-#   }
-# }
