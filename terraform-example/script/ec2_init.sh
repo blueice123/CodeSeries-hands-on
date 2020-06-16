@@ -13,6 +13,12 @@ sudo ./install auto
 sudo yum install -y git python3
 sudo pip3 install virtualenv
 
+## update awscli to 2ver
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo unzip awscliv2.zip
+sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+
+## Source code install & Excute Python code
 sudo git clone https://github.com/blueice123/CodeSeries-hands-on.git
 sudo mv /CodeSeries-hands-on/flask-example /home/ec2-user/
 sudo chown -R ec2-user:ec2-user /home/ec2-user/

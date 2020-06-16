@@ -15,3 +15,7 @@ output "CodeCommit_ec2" {
 output "CodeCommit_fargate" {
     value = aws_codecommit_repository.commit_fargate.clone_url_http
 }
+output "Containerimg_repo" {
+    value = aws_ecr_repository.mz-hands-on-ecr.name
+}
+
