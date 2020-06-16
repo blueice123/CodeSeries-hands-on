@@ -17,9 +17,17 @@ resource "aws_iam_user_policy_attachment" "iam_developer2" {
   user       = aws_iam_user.iam_developer.name
   policy_arn = aws_iam_policy.iam_admin.arn
 }
+resource "aws_iam_user_policy_attachment" "iam_developer3" {
+  user       = aws_iam_user.iam_developer.name
+  policy_arn = aws_iam_policy.iam_selfchange.arn
+}
 resource "aws_iam_user_policy_attachment" "iam_admin" {
   user       = aws_iam_user.iam_admin.name
   policy_arn = aws_iam_policy.iam_admin.arn
+}
+resource "aws_iam_user_policy_attachment" "iam_admin2" {
+  user       = aws_iam_user.iam_admin.name
+  policy_arn = aws_iam_policy.iam_selfchange.arn
 }
 
 ## Create IAM policies
@@ -48,7 +56,7 @@ resource "aws_iam_policy" "iam_developer" {
                     "StringEqualsIfExists": {
                         "codecommit:References": [
                             "refs/heads/master",
-                            "refs/heads/prod"
+                            "refs/heads/production"
                         ]
                     },
                     "Null": {
@@ -150,3 +158,43 @@ resource "aws_iam_policy" "iam_admin" {
     }
   EOF
 }
+
+resource "aws_iam_policy" "iam_selfchange" {
+  name        = "mz_hands-on_self-${random_id.random.hex}"
+  description = "mz_hands-on_self-${random_id.random.hex}"
+  policy      = <<-EOF
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "ViewAccountPasswordRequirements",
+                "Effect": "Allow",
+                "Action": "iam:GetAccountPasswordPolicy",
+                "Resource": "*"
+            },
+            {
+                "Sid": "ChangeOwnAccount",
+                "Effect": "Allow",
+                "Action": [
+                    "iam:GetUser",
+                    "iam:ChangePassword",
+                    "iam:ListUserPolicies",
+                    "iam:CreateVirtualMFADevice",
+                    "iam:DeactivateMFADevice",
+                    "iam:EnableMFADevice",
+                    "iam:ListMFADevices",
+                    "iam:ResyncMFADevice",
+                    "iam:GetLoginProfile",
+                    "iam:UpdateLoginProfile",
+                    "iam:ListAttachedUserPolicies",
+                    "iam:ListGroupsForUser"
+                ],
+                "Resource": "arn:aws:iam::*:user/$${aws:username}"
+            }
+        ]
+    }
+  EOF
+}
+
+
+

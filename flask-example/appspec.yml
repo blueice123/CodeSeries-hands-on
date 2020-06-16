@@ -5,6 +5,10 @@ files:
     destination: /home/ec2-user/flask-example/
 hooks:
   BeforeInstall:
+    - location: 01-hello-world/scripts/before_install.sh
+      timeout: 60
+      runas: ec2-user
+  Install:
     - location: 01-hello-world/scripts/install_dependencies.sh
       timeout: 60
       runas: ec2-user

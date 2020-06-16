@@ -66,14 +66,6 @@ resource "aws_iam_role_policy" "mz_hands-on_ssm" {
         {
             "Effect": "Allow",
             "Action": [
-                "ds:CreateComputer",
-                "ds:DescribeDirectories"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:DescribeLogGroups",
@@ -86,13 +78,10 @@ resource "aws_iam_role_policy" "mz_hands-on_ssm" {
             "Effect": "Allow",
             "Action": [
                 "s3:GetBucketLocation",
-                "s3:PutObject",
                 "s3:GetObject",
                 "s3:GetEncryptionConfiguration",
                 "s3:AbortMultipartUpload",
-                "s3:ListMultipartUploadParts",
-                "s3:ListBucket",
-                "s3:ListBucketMultipartUploads"
+                "s3:ListBucket"
             ],
             "Resource": "*"
         }
