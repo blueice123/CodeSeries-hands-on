@@ -1,0 +1,6 @@
+FROM python:3
+
+ADD 01-hello-world /
+RUN pip install requirements.txt
+CMD [ "python", "01-hellow-world/hello.py" ]
+
