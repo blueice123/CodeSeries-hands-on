@@ -1,0 +1,73 @@
+version: 0.2
+phases:
+pre_build:
+commands:
+- echo Logging in to Amazon ECR...
+- aws --version
+- aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 239234376445.dkr.ecr.ap-northeast-2.amazonaws.com
+- REPOSITORY_URI=
+- IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+- echo "$AWS_DEFAULT_REGION $REPOSITORY_URI $IMAGE_TAG $CODEBUILD_RESOLVED_SOURCE_VERSION"
+- env
+build:
+commands:
+- echo Build started on `date`
+- echo Building the Docker image...
+- docker build . -f ./provisioning/dockerfile/stage/Dockerfile -t $REPOSITORY_URI:latest
+- docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+post_build:
+commands:
+- echo Build completed on `date`
+- echo Pushing the Docker images...
+- docker push $REPOSITORY_URI:latest
+- docker push $REPOSITORY_URI:$IMAGE_TAG
+- echo Writing image definitions file...
+- printf '[{"name":"mz-cm-upload-dev-container","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+files:
+- imagedefinitions.json
+
+
+
+
+
+
+version: 0.2
+# build image : aws/codebuild/java:openjdk-8-1.6.0
+env:
+    variables:
+      IMAGE_NAME: "prod-atp-ecr-front"
+      ACCOUNT_ID: "394374453764"
+      CONTAINER_NAME: "prod-atp-front"
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install -y docker.io
+      - echo Build version check...
+      - aws --version && python --version && java -version  && mvn --version && gradle -v
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Packaging the jar file...
+      - mvn clean package -DskipTests
+      - pwd
+      - ls -al
+      - ls -al ./target/
+      #- mvn install dockerfile:build
+  post_build:
+    commands:
+      - echo Building the Docker image... `date`
+      - docker build -t ${IMAGE_NAME} .
+      - docker images
+      - docker tag ${IMAGE_NAME}:latest ${ACCOUNT_ID}.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${IMAGE_NAME}:latest
+      - docker images
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}:latest
+      - printf '[{"name":"prod-atp-ecr-front","imageUri":"394374453764.dkr.ecr.ap-northeast-2.amazonaws.com/prod-atp-ecr-front:latest"}]' > imagedefinitions.json
+      #- printf '[{"name":"${CONTAINER_NAME}","imageUri":"${ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${CONTAINER_NAME}:latest"}]' > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
