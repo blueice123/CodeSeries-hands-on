@@ -9,3 +9,9 @@ output "eip_for_front_production" {
 output "eip_for_front_develop" {
     value = aws_eip.eip_for_front_develop.public_ip
 }
+output "CodeCommit_ec2" {
+    value = aws_codecommit_repository.commit_ec2.clone_url_http
+}
+output "CodeCommit_fargate" {
+    value = aws_codecommit_repository.commit_fargate.clone_url_http
+}
