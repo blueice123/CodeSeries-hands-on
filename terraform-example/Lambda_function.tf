@@ -33,7 +33,8 @@ resource "aws_lambda_function" "ApprovalRequester" {
 
   environment {
     variables = {
-      foo = "bar"
+        SLACK_WEBHOOK_URL = var.SLACK_WEBHOOK_URL,
+        SLACK_CHANNEL = var.SLACK_CHANNEL
     }
   }
 }
@@ -54,7 +55,8 @@ resource "aws_lambda_function" "ApprovalHandler" {
 
   environment {
     variables = {
-      foo = "bar"
+        SLACK_WEBHOOK_URL = var.SLACK_WEBHOOK_URL,
+        SLACK_CHANNEL = var.SLACK_CHANNEL
     }
   }
 }

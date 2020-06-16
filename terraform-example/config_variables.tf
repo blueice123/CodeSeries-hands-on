@@ -13,6 +13,18 @@ variable "key_pair" {
   default = "seoul_test_hsy" # 본인 키 파일이름을 입력 
 }
 
+## Slack environments
+variable "SLACK_WEBHOOK_URL" {
+  description = "Define your SLACK_WEBHOOK_URL"
+  type    = string
+  default = "https://hooks.slack.com/services/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" # 본인 키 파일이름을 입력 
+}
+variable "SLACK_CHANNEL" {
+  description = "Define your SLACK_CHANNEL"
+  type    = string
+  default = "#guardduty-test" # 본인 키 파일이름을 입력 
+}
+
 variable "region" {
   description = "The region to deploy the cluster in, e.g: ap-northeast-2"
   type    = string
