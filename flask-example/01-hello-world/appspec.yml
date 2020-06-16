@@ -17,7 +17,7 @@ hooks:
     - location: scripts/create_test_db.sh
       timeout: 300
       runas: root
-  ApplicationStop:
+  ValidateService:
     - location: scripts/stop_server.sh
       timeout: 300
       runas: root
