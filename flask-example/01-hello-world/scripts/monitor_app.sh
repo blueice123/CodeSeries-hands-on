@@ -1,7 +1,8 @@
 #!/bin/bash
 
-isExistApp=`pgrep hello.py`
+isExistApp=`ps -ef|grep python| grep -v grep`
 if [[ -n  $isExistApp ]]; then
     echo "0"
-elif echo "1"
+else
+    echo "1"
 fi
