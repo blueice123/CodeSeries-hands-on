@@ -3,7 +3,7 @@
 ## Configures AWS provider
 provider "aws" {
   region = var.region
-  profile = "mz-syha"
+  profile = "hands-on"
 }
 
 ## AWS environments

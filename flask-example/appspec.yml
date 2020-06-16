@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/flask-example/01-hello-world
+hooks:
+  BeforeInstall:
+    - location: 01-hello-world/scripts/install_dependencies.sh
+      timeout: 60
+      runas: root
+  AfterInstall:
+    - location: 01-hello-world/scripts/stop_app.sh
+      timeout: 60
+      runas: root
+  ApplicationStart:
+    - location: 01-hello-world/scripts/start_server.sh
+      timeout: 60
+      runas: root
+  ValidateService:
+    - location: 01-hello-world/scripts/stop_server.sh
+      timeout: 60
+      runas: root
