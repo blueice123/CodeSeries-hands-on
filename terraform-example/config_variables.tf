@@ -17,12 +17,12 @@ variable "key_pair" {
 variable "SLACK_WEBHOOK_URL" {
   description = "Define your SLACK_WEBHOOK_URL"
   type    = string
-  default = "https://hooks.slack.com/services/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" # 본인 키 파일이름을 입력 
+  default = "https://hooks.slack.com/services/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" ## Slack webhook URL 입력 
 }
 variable "SLACK_CHANNEL" {
   description = "Define your SLACK_CHANNEL"
   type    = string
-  default = "#guardduty-test" # 본인 키 파일이름을 입력 
+  default = "#mz-hands-on" # Slack hook url의 채널을 입력 
 }
 
 variable "region" {
