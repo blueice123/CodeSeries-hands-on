@@ -18,7 +18,8 @@ SLACK_CHANNEL = os.environ['SLACK_CHANNEL']
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-def lambda_handler(event, context):
+# def lambda_handler(event, context):
+def Requester(event, context):
     print("Received event: " + json.dumps(event, indent=2))
     message = event["Records"][0]["Sns"]["Message"]
     

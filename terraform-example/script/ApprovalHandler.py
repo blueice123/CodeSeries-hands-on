@@ -9,7 +9,7 @@ SLACK_VERIFICATION_TOKEN = os.environ['SLACK_VERIFICATION_TOKEN']
 
 #Triggered by API Gateway
 #It kicks off a particular CodePipeline project
-def lambda_handler(event, context):
+def Handler(event, context):
 	#print("Received event: " + json.dumps(event, indent=2))
 	body = parse_qs(event['body'])
 	payload = json.loads(body['payload'][0])

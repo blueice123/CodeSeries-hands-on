@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "mz_hands-on_lambda" {
                     "logs:PutLogEvents"
                 ],
                 "Resource": [
-                    "arn:aws:logs:ap-northeast-2:239234376445:log-group:/aws/lambda/labmda-test-approval:*"
+                    "arn:aws:logs:ap-northeast-2:239234376445:log-group:*"
                 ]
             }
         ]
@@ -52,7 +52,7 @@ resource "aws_lambda_function" "ApprovalRequester" {
   filename      = "script/ApprovalRequester.zip"
   function_name = "ApprovalRequester-${random_id.random.hex}"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "lambda_handler"
+  handler       = "ApprovalRequester.Requester"
   timeout       = "300"
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
@@ -74,7 +74,7 @@ resource "aws_lambda_function" "ApprovalHandler" {
   filename      = "script/ApprovalHandler.zip"
   function_name = "ApprovalHandler-${random_id.random.hex}"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "lambda_handler"
+  handler       = "ApprovalHandler.Handler"
   timeout       = "300"
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
