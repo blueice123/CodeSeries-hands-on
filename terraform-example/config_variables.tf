@@ -22,7 +22,7 @@ variable "SLACK_WEBHOOK_URL" {
 variable "SLACK_CHANNEL" {
   description = "Define your SLACK_CHANNEL"
   type    = string
-  default = "#mz-hands-on" # Slack hook url의 채널을 입력 
+  default = "mz-hands-on" # Slack hook url의 채널을 입력 
 }
 
 variable "region" {

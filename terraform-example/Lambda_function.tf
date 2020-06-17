@@ -17,6 +17,36 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy" "mz_hands-on_lambda" {
+  name = "mz_hands-on_lambda-${random_id.random.hex}"
+  role = aws_iam_role.iam_for_lambda.id
+
+  policy = <<-EOF
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": "logs:CreateLogGroup",
+                "Resource": "arn:aws:logs:ap-northeast-2:239234376445:*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                ],
+                "Resource": [
+                    "arn:aws:logs:ap-northeast-2:239234376445:log-group:/aws/lambda/labmda-test-approval:*"
+                ]
+            }
+        ]
+    }
+  EOF
+}
+
+
 ## Function of Approval Requester 
 resource "aws_lambda_function" "ApprovalRequester" {
   filename      = "script/ApprovalRequester.zip"
