@@ -28,18 +28,24 @@ resource "aws_iam_role_policy" "mz_hands-on_lambda" {
         "Statement": [
             {
                 "Effect": "Allow",
-                "Action": "logs:CreateLogGroup",
-                "Resource": "arn:aws:logs:ap-northeast-2:239234376445:*"
-            },
-            {
-                "Effect": "Allow",
                 "Action": [
+                    "logs:CreateLogGroup",
                     "logs:CreateLogStream",
                     "logs:PutLogEvents"
                 ],
-                "Resource": [
-                    "arn:aws:logs:ap-northeast-2:239234376445:log-group:*"
-                ]
+                "Resource": "*"
+            },
+            {
+            "Action": [
+                "codepipeline:GetPipeline",
+                "codepipeline:GetPipelineState",
+                "codepipeline:GetPipelineExecution",
+                "codepipeline:ListPipelineExecutions",
+                "codepipeline:ListPipelines",
+                "codepipeline:PutApprovalResult"
+            ],
+                "Effect": "Allow",
+                "Resource": "*"
             }
         ]
     }
@@ -69,6 +75,8 @@ resource "aws_lambda_function" "ApprovalRequester" {
   }
 }
 
+## Refrence in https://medium.com/faun/deploy-merge-and-build-code-from-slack-in-aws-125507c85765
+## https://api.slack.com/apps -> Create New App
 ## Function of Approval Handler 
 resource "aws_lambda_function" "ApprovalHandler" {
   filename      = "script/ApprovalHandler.zip"
@@ -85,8 +93,7 @@ resource "aws_lambda_function" "ApprovalHandler" {
 
   environment {
     variables = {
-        SLACK_WEBHOOK_URL = var.SLACK_WEBHOOK_URL,
-        SLACK_CHANNEL     = var.SLACK_CHANNEL
+        SLACK_VERIFICATION_TOKEN	 = var.SLACK_VERIFICATION_TOKEN	
     }
   }
 }
@@ -95,18 +102,11 @@ resource "aws_lambda_function" "ApprovalHandler" {
 resource "aws_sns_topic" "Approval_Request_SNS" {
   name = "approval-request-topic-${random_id.random.hex}"
 }
-resource "aws_sns_topic" "Approval_Handler_SNS" {
-  name = "approval-handler-topic-${random_id.random.hex}"
-}
+
 
 ## Connect backend to Lambda 
 resource "aws_sns_topic_subscription" "Approval_Request_SNS" {
   topic_arn = aws_sns_topic.Approval_Request_SNS.arn
-  protocol  = "lambda"
-  endpoint  = aws_lambda_function.ApprovalRequester.arn
-}
-resource "aws_sns_topic_subscription" "Approval_Handler_SNS" {
-  topic_arn = aws_sns_topic.Approval_Handler_SNS.arn
   protocol  = "lambda"
   endpoint  = aws_lambda_function.ApprovalRequester.arn
 }
