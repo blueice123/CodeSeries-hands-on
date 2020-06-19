@@ -7,6 +7,22 @@ resource "aws_iam_user" "iam_admin" {
   name = "mz_hands-on_admin-${random_id.random.hex}"
   path = "/"
 }
+# resource "aws_iam_user_login_profile" "iam_developer" {
+#   user    = aws_iam_user.iam_developer.name
+#   pgp_key = "keybase:megazone-hands-on"
+#   password_reset_required = false #true
+# }
+# resource "aws_iam_user_login_profile" "iam_admin" {
+#   user    = aws_iam_user.iam_admin.name
+#   pgp_key = "keybase:megazone-hands-on"
+#   password_reset_required = false #true
+# }
+# output "iam_developer" {
+#   value = aws_iam_user_login_profile.iam_developer.encrypted_password
+# }
+# output "iam_admin" {
+#   value = aws_iam_user_login_profile.iam_admin.encrypted_password
+# }
 
 ## Attaching role to IAM Users
 resource "aws_iam_user_policy_attachment" "iam_developer1" {

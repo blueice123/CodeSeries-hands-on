@@ -29,7 +29,7 @@ locals {
 }
 
 locals {
-  zone_index = {  ### 사용하는 모든 public subnet의 ㄴzone을 명시 (var.single_nat = false 일 때 private_subnet 갯수와 association에 연관됨)
+  zone_index = { 
     "a" = 0,
     "c" = 1
   }

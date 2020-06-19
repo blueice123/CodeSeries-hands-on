@@ -1,36 +1,37 @@
 # Input Variables
 ############################
-## Configures AWS provider
 provider "aws" {
   region = var.region
-  profile = "hands-on"
+  profile = "hands-on"  # profile 입력
 }
-
-## AWS environments
-variable "key_pair" {
+variable "key_pair" {  
   description = "Define your Ec2 KeyPair name"
   type    = string
   default = "seoul_test_hsy" # Ec2 키 파일이름을 입력 
 }
-
 ## Slack environments
 variable "SLACK_WEBHOOK_URL" {
   description = "Define your SLACK_WEBHOOK_URL"
   type    = string
-  default = "https://hooks.slack.com/services/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" ## Slack APP의 WEBHook 입력 
+  default = "https://hooks.slack.com/services/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" ## Slack APP의 WEBHook 입력 
 }
 variable "SLACK_CHANNEL" {
   description = "Define your SLACK_CHANNEL"
   type    = string
   default = "mz-hands-on" # Slack 채널을 입력 
 }
-
 variable "SLACK_VERIFICATION_TOKEN" {
   description = "Define your SLACK_VERIFICATION_TOKEN"
   type    = string
-  default = "KLHnOu12BEYPIDQHd7p09cuR" # Slack APP의 토큰 입력 hook url의 채널을 입력 
+  default = "ecvxozC3fWzGjXomvOgdBqDy" # Slack APP의 토큰 입력 hook url의 채널을 입력 
 }
-
+variable "accountId" {
+  description = "Define your AWS accountId"
+  type    = string
+  default = "239234376445"  # AWS Account# 입력
+}
+# End Variables
+############################
 
 variable "region" {
   description = "The region to deploy the cluster in, e.g: ap-northeast-2"
@@ -38,11 +39,7 @@ variable "region" {
   default = "ap-northeast-2"
 }
 
-# variable "account_id" {
-#   description = "The region to deploy the cluster in, e.g: ap-northeast-2"
-#   type    = string
-#   default = "239234376445"
-# }
+
 
 variable "company" {
   description = "Name to be used on all the resources as identifier"

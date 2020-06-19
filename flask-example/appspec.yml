@@ -7,20 +7,20 @@ hooks:
   BeforeInstall:
     - location: 01-hello-world/scripts/before_install.sh
       timeout: 60
-      runas: ec2-user
+      runas: root
   Install:
     - location: 01-hello-world/scripts/install_dependencies.sh
       timeout: 60
-      runas: ec2-user
+      runas: root
   AfterInstall:
     - location: 01-hello-world/scripts/stop_app.sh
       timeout: 60
-      runas: ec2-user
+      runas: root
   ApplicationStart:
     - location: 01-hello-world/scripts/start_app.sh
       timeout: 60
-      runas: ec2-user
+      runas: root
   ValidateService:
     - location: 01-hello-world/scripts/monitor_app.sh
       timeout: 60
-      runas: ec2-user
+      runas: root

@@ -18,4 +18,3 @@ output "CodeCommit_fargate" {
 output "Containerimg_repo" {
     value = aws_ecr_repository.mz-hands-on-ecr.name
 }
-

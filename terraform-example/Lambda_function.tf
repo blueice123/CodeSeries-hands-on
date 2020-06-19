@@ -1,21 +1,20 @@
 resource "aws_iam_role" "iam_for_lambda" {
   name = "iam_for_lambda-${random_id.random.hex}"
 
-  assume_role_policy = <<EOF
+  assume_role_policy = <<-EOF
     {
       "Version": "2012-10-17",
       "Statement": [
         {
-          "Action": "sts:AssumeRole",
+          "Effect": "Allow",
           "Principal": {
             "Service": "lambda.amazonaws.com"
           },
-          "Effect": "Allow",
-          "Sid": ""
+          "Action": "sts:AssumeRole"
         }
       ]
     }
-EOF
+  EOF
 }
 
 resource "aws_iam_role_policy" "mz_hands-on_lambda" {
@@ -103,10 +102,16 @@ resource "aws_sns_topic" "Approval_Request_SNS" {
   name = "approval-request-topic-${random_id.random.hex}"
 }
 
-
 ## Connect backend to Lambda 
 resource "aws_sns_topic_subscription" "Approval_Request_SNS" {
   topic_arn = aws_sns_topic.Approval_Request_SNS.arn
   protocol  = "lambda"
   endpoint  = aws_lambda_function.ApprovalRequester.arn
+}
+resource "aws_lambda_permission" "with_sns" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ApprovalRequester.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.Approval_Request_SNS.arn
 }

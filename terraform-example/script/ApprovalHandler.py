@@ -41,7 +41,7 @@ def send_slack_message(action_details):
 	client = boto3.client('codepipeline')
 	response_approval = client.put_approval_result(
 							pipelineName=codepipeline_name,
-							stageName='approval',
+							stageName='Approval',
 							actionName='ApprovalRequest',
 							result={'summary':'','status':codepipeline_status},
 							token=token)
